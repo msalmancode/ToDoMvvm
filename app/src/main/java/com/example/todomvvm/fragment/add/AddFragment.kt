@@ -1,4 +1,4 @@
-package com.example.todomvvm.add
+package com.example.todomvvm.fragment.add
 
 import android.os.Bundle
 import android.view.*

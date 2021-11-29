@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="24dp"
-    tools:context=".update.UpdateFragment">
+    tools:context=".fragment.update.UpdateFragment">
 
     <EditText
         android:id="@+id/current_title_et"
