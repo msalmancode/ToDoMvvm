@@ -1,4 +1,4 @@
-package com.example.todomvvm.data
+package com.example.todomvvm.data.model
 
 enum class Priority {
     HIGH,
