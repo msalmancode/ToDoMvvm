@@ -1,10 +1,7 @@
 package com.example.todomvvm.data
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.example.todomvvm.data.model.ToDoData
 
 @Dao
@@ -15,5 +12,14 @@ interface TodoDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertData(toDoData: ToDoData)
+
+    @Update
+    suspend fun updateData(toDoData: ToDoData)
+
+    @Delete
+    suspend fun deleteData(toDoData: ToDoData)
+
+    @Query("Delete from todo_table")
+    suspend fun deleteAll()
 
 }
