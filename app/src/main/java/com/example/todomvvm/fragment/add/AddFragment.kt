@@ -33,7 +33,7 @@ class AddFragment : Fragment() {
         // set menu
         setHasOptionsMenu(true)
 
-        return addBinding.root;
+        return addBinding.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
