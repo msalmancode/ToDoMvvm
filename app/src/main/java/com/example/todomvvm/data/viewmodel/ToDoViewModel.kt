@@ -13,14 +13,9 @@ import kotlinx.coroutines.launch
 class ToDoViewModel(application: Application) : AndroidViewModel(application) {
 
     private val todoDao = ToDoDatabase.getDatabase(application).todoDao()
-    private val repository: ToDoRepository
+    private val repository: ToDoRepository = ToDoRepository(todoDao)
 
-    val getAllData: LiveData<List<ToDoData>>
-
-    init {
-        repository = ToDoRepository(todoDao)
-        getAllData = repository.getData()
-    }
+    val getAllData: LiveData<List<ToDoData>> = repository.getData()
 
     fun insertData(toDoData: ToDoData) {
         viewModelScope.launch(Dispatchers.IO) {

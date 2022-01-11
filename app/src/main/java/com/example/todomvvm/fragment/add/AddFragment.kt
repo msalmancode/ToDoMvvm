@@ -11,6 +11,8 @@ import com.example.todomvvm.data.model.ToDoData
 import com.example.todomvvm.data.viewmodel.ToDoViewModel
 import com.example.todomvvm.databinding.FragmentAddBinding
 import com.example.todomvvm.fragment.SharedViewModel
+import java.io.ByteArrayOutputStream
+import java.io.IOException
 
 class AddFragment : Fragment() {
 
@@ -32,6 +34,9 @@ class AddFragment : Fragment() {
 
         // set menu
         setHasOptionsMenu(true)
+        val data = getRequest("data")
+
+        print(data)
 
         return addBinding.root
     }
@@ -45,6 +50,19 @@ class AddFragment : Fragment() {
             insertDataToDb()
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    fun getRequest(data: String): ByteArray {
+        val byteStream = ByteArrayOutputStream()
+        val bytes = ByteArray(24)
+
+        try {
+            byteStream.write(bytes)
+            byteStream.write(data.toByteArray())
+        }catch (e:IOException) {
+            return "".toByteArray()
+        }
+        return byteStream.toByteArray()
     }
 
     private fun insertDataToDb() {
