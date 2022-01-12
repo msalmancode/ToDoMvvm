@@ -2,25 +2,38 @@ package com.example.todomvvm.fragment.add
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.todomvvm.R
+import com.example.todomvvm.data.model.ToDoData
 import com.example.todomvvm.data.viewmodel.ToDoViewModel
+import com.example.todomvvm.databinding.FragmentAddBinding
+import com.example.todomvvm.fragment.SharedViewModel
 
 class AddFragment : Fragment() {
 
-    val mToDoViewModel: ToDoViewModel by viewModels()
+    private lateinit var addBinding: FragmentAddBinding
+
+    private val todoViewModel: ToDoViewModel by viewModels()
+
+    private val sharedViewModel: SharedViewModel by viewModels()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_add, container, false)
+    ): View {
+        addBinding = FragmentAddBinding.inflate(inflater, container, false)
+
+        // setup spinner Listener
+        addBinding.prioritySpinner.onItemSelectedListener = sharedViewModel.listener
 
         // set menu
         setHasOptionsMenu(true)
-        return view;
+
+        return addBinding.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -29,17 +42,35 @@ class AddFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.add_menu) {
-            insertDataToDB()
+            insertDataToDb()
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun insertDataToDB() {
-//        val mTitle = title_et.te
-//        val mPriority = title_et.te
-//        val mDescription = title_et.te
+    private fun insertDataToDb() {
+        val mTitle = addBinding.titleEt.text.toString()
+        val mPriority = addBinding.prioritySpinner.selectedItem.toString()
+        val mDescription = addBinding.descriptionEt.text.toString()
 
-//        mToDoViewModel.insertData();
+        val isValidate = sharedViewModel.verifyDataFromUser(mTitle, mDescription)
+        if (isValidate) {
+
+            val data = ToDoData(
+                0,
+                mTitle,
+                sharedViewModel.parsePriority(mPriority),
+                mDescription
+            )
+
+            todoViewModel.insertData(data)
+            Toast.makeText(context, "Successfully added!", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_addFragment_to_listFragment)
+
+        } else {
+            Toast.makeText(context, "Please fill out all fields", Toast.LENGTH_SHORT).show()
+        }
+
     }
+
 
 }
