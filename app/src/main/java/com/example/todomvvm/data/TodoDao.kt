@@ -7,7 +7,7 @@ import com.example.todomvvm.data.model.ToDoData
 @Dao
 interface TodoDao {
 
-    @Query("Select * From todo_table ORDER BY id ASC")
+    @Query("SELECT * FROM todo_table ORDER BY id ASC")
     fun getData(): LiveData<List<ToDoData>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -19,7 +19,16 @@ interface TodoDao {
     @Delete
     suspend fun deleteData(toDoData: ToDoData)
 
-    @Query("Delete from todo_table")
+    @Query("DELETE FROM todo_table")
     suspend fun deleteAll()
+
+    @Query("SELECT * FROM TODO_TABLE WHERE title LIKE :searchQuery")
+    fun searchDatabase(searchQuery: String): LiveData<List<ToDoData>>
+
+    @Query("SELECT * FROM TODO_TABLE ORDER BY CASE WHEN priority LIKE 'H%' THEN 1 WHEN priority LIKE 'M%' THEN 2 WHEN priority LIKE 'L%' THEN 3 END")
+    fun sortByHighPriority(): LiveData<List<ToDoData>>
+
+    @Query("SELECT * FROM TODO_TABLE ORDER BY CASE WHEN priority LIKE 'L%' THEN 1 WHEN priority LIKE 'M%' THEN 2 WHEN priority LIKE 'H%' THEN 3 END")
+    fun sortByLowPriority(): LiveData<List<ToDoData>>
 
 }

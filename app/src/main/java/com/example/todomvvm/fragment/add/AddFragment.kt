@@ -11,6 +11,7 @@ import com.example.todomvvm.data.model.ToDoData
 import com.example.todomvvm.data.viewmodel.ToDoViewModel
 import com.example.todomvvm.databinding.FragmentAddBinding
 import com.example.todomvvm.fragment.SharedViewModel
+import com.example.todomvvm.utils.hideKeyboard
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 
@@ -26,7 +27,7 @@ class AddFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         addBinding = FragmentAddBinding.inflate(inflater, container, false)
 
         // setup spinner Listener
@@ -37,6 +38,7 @@ class AddFragment : Fragment() {
         val data = getRequest("data")
 
         print(data)
+
 
         return addBinding.root
     }
@@ -59,7 +61,7 @@ class AddFragment : Fragment() {
         try {
             byteStream.write(bytes)
             byteStream.write(data.toByteArray())
-        }catch (e:IOException) {
+        } catch (e: IOException) {
             return "".toByteArray()
         }
         return byteStream.toByteArray()

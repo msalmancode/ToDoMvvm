@@ -3,8 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/msalm/AndroidStudioProjects/Learning/TodoMvvm/app/src/main/res/drawable/custom_input.xml" value="0.34444444444444444" />
+        <entry key="..\:/Users/msalm/AndroidStudioProjects/Learning/TodoMvvm/app/src/main/res/drawable/item_background.xml" value="0.34444444444444444" />
         <entry key="..\:/Users/msalm/AndroidStudioProjects/Learning/TodoMvvm/app/src/main/res/layout/fragment_add.xml" value="0.3625" />
         <entry key="..\:/Users/msalm/AndroidStudioProjects/Learning/TodoMvvm/app/src/main/res/layout/fragment_list.xml" value="0.25" />
+        <entry key="..\:/Users/msalm/AndroidStudioProjects/Learning/TodoMvvm/app/src/main/res/layout/row_layout.xml" value="0.33" />
         <entry key="..\:/Users/msalm/AndroidStudioProjects/Learning/TodoMvvm/app/src/main/res/menu/add_fragment_menu.xml" value="0.33" />
         <entry key="..\:/Users/msalm/AndroidStudioProjects/Learning/TodoMvvm/app/src/main/res/menu/list_fragment_menu.xml" value="0.3625" />
         <entry key="..\:/Users/msalm/AndroidStudioProjects/Learning/TodoMvvm/app/src/main/res/menu/update_fragment_menu.xml" value="0.3625" />

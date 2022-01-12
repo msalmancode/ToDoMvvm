@@ -1,7 +1,6 @@
 package com.example.todomvvm.fragment
 
 import android.app.Application
-import android.text.TextUtils
 import android.view.View
 import android.widget.AdapterView
 import android.widget.TextView
@@ -61,9 +60,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun verifyDataFromUser(mTitle: String, mDescription: String): Boolean {
-        return if (TextUtils.isEmpty(mTitle) || TextUtils.isEmpty(mDescription)) {
-            false
-        } else !(TextUtils.isEmpty(mTitle)) || !TextUtils.isEmpty(mDescription)
+        return !(mTitle.isEmpty() || mDescription.isEmpty())
     }
 
     fun parsePriority(priority: String): Priority {

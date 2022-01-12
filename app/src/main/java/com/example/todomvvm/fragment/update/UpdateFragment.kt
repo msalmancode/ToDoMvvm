@@ -13,6 +13,7 @@ import com.example.todomvvm.data.model.ToDoData
 import com.example.todomvvm.data.viewmodel.ToDoViewModel
 import com.example.todomvvm.databinding.FragmentUpdateBinding
 import com.example.todomvvm.fragment.SharedViewModel
+import com.example.todomvvm.utils.hideKeyboard
 
 class UpdateFragment : Fragment() {
     private var _binding: FragmentUpdateBinding? = null
@@ -26,7 +27,7 @@ class UpdateFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // set Data Binding
         _binding = FragmentUpdateBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
@@ -37,6 +38,7 @@ class UpdateFragment : Fragment() {
 
         // set menu
         setHasOptionsMenu(true)
+
 
         return binding.root
     }
