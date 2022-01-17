@@ -19,7 +19,7 @@ interface TodoDao {
     @Delete
     suspend fun deleteData(toDoData: ToDoData)
 
-    @Query("DELETE FROM todo_table")
+    @Query("DELETE FROM TODO_TABLE")
     suspend fun deleteAll()
 
     @Query("SELECT * FROM TODO_TABLE WHERE title LIKE :searchQuery")
