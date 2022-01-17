@@ -8,6 +8,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.todomvvm.R
@@ -34,17 +35,14 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
     ): View {
         // Data Binding
         _binding = FragmentListBinding.inflate(inflater, container, false)
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.mSharedViewModel = sharedViewModel
 
         // setup Recycler View
         setUpRecyclerView()
 
         // Observing live data
-        todoViewModel.getAllData.observe(viewLifecycleOwner, { data ->
-            sharedViewModel.checkDatabaseIsEmpty(data)
-            adapter.setData(data)
-        })
+        getLiveListData()
 
         // set menu
         setHasOptionsMenu(true)
@@ -58,11 +56,22 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
     private fun setUpRecyclerView() {
         val recyclerView = binding.listRecyclerView
         recyclerView.adapter = adapter
-        recyclerView.layoutManager =
-            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-
+        if (binding.listRecyclerView.layoutManager is StaggeredGridLayoutManager) {
+            recyclerView.layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        } else {
+            recyclerView.layoutManager =
+                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        }
         // swipe to delete
         swipeToDelete(recyclerView)
+    }
+
+    private fun getLiveListData() {
+        todoViewModel.getAllData.observe(viewLifecycleOwner, { data ->
+            sharedViewModel.checkDatabaseIsEmpty(data)
+            adapter.setData(data)
+        })
     }
 
     private fun swipeToDelete(recyclerView: RecyclerView) {
@@ -104,13 +113,13 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.delete_all_menu -> confirmRemoval()
-            R.id.priority_high_menu -> todoViewModel.sortByHighPriority.observe(
-                this,
-                { adapter.setData(it) })
-            R.id.priority_low_menu -> todoViewModel.sortByLowPriority.observe(
-                this,
-                { adapter.setData(it) })
-            R.id.menu_sort -> sortList()
+            R.id.menu_arrange -> {
+                setUpRecyclerView()
+                getLiveListData()
+            }
+            R.id.sort_by_menu -> {
+                sortList()
+            }
         }
         return super.onOptionsItemSelected(item)
     }

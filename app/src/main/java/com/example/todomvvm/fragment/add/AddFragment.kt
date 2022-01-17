@@ -14,7 +14,8 @@ import com.example.todomvvm.fragment.SharedViewModel
 
 class AddFragment : Fragment() {
 
-    private lateinit var addBinding: FragmentAddBinding
+    private var _binding: FragmentAddBinding? = null
+    private val binding get() = _binding!!
 
     private val todoViewModel: ToDoViewModel by viewModels()
 
@@ -25,15 +26,15 @@ class AddFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        addBinding = FragmentAddBinding.inflate(inflater, container, false)
+        _binding = FragmentAddBinding.inflate(inflater, container, false)
 
         // setup spinner Listener
-        addBinding.prioritySpinner.onItemSelectedListener = sharedViewModel.listener
+        binding.prioritySpinner.onItemSelectedListener = sharedViewModel.listener
 
         // set menu
         setHasOptionsMenu(true)
 
-        return addBinding.root
+        return binding.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -47,10 +48,15 @@ class AddFragment : Fragment() {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
+    }
+
     private fun insertDataToDb() {
-        val mTitle = addBinding.titleEt.text.toString()
-        val mPriority = addBinding.prioritySpinner.selectedItem.toString()
-        val mDescription = addBinding.descriptionEt.text.toString()
+        val mTitle = binding.titleEt.text.toString()
+        val mPriority = binding.prioritySpinner.selectedItem.toString()
+        val mDescription = binding.descriptionEt.text.toString()
 
         val isValidate = sharedViewModel.verifyDataFromUser(mTitle, mDescription)
         if (isValidate) {

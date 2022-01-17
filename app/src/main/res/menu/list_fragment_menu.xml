@@ -9,14 +9,20 @@
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="ifRoom" />
 
-    <item
+    <!--<item
         android:id="@+id/menu_sort"
         android:icon="@drawable/ic_sort"
         android:title="@string/search"
         app:showAsAction="ifRoom" />
+-->
+    <item
+        android:id="@+id/menu_arrange"
+        android:icon="@drawable/ic_grid"
+        android:title="@string/search"
+        app:showAsAction="ifRoom|withText" />
 
 
-    <group android:checkableBehavior="single">
+    <!--<group android:checkableBehavior="single">
         <item
             android:id="@+id/menu_sortBy"
             android:title="@string/sort_by">
@@ -32,7 +38,12 @@
             </menu>
         </item>
 
-    </group>
+    </group>-->
+
+    <item
+        android:id="@+id/sort_by_menu"
+        android:title="@string/sort_by"
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/delete_all_menu"

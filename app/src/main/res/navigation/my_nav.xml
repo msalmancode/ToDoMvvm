@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/listFragment"
         android:name="com.example.todomvvm.fragment.list.ListFragment"
-        android:label="List Fragment"
+        android:label="ToDo Task    "
         tools:layout="@layout/fragment_list" >
         <action
             android:id="@+id/action_listFragment_to_addFragment"

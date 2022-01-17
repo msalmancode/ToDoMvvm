@@ -29,7 +29,7 @@ class UpdateFragment : Fragment() {
     ): View {
         // set Data Binding
         _binding = FragmentUpdateBinding.inflate(inflater, container, false)
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.currentData = args.currentItem
 
         // setup Spinner Listener
