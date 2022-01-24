@@ -1,1 +1,1 @@
-TODO App with MVVM arhitechture
+TODO App with MVVM Architechture
