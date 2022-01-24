@@ -12,11 +12,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.todomvvm.R
+import com.example.todomvvm.data.model.Orientation
 import com.example.todomvvm.data.model.ToDoData
 import com.example.todomvvm.data.viewmodel.ToDoViewModel
 import com.example.todomvvm.databinding.FragmentListBinding
 import com.example.todomvvm.fragment.SharedViewModel
 import com.example.todomvvm.fragment.list.adapter.ListAdapter
+import com.example.todomvvm.utils.DataStoreManager
 import com.example.todomvvm.utils.hideKeyboard
 import com.google.android.material.snackbar.Snackbar
 
@@ -29,6 +31,9 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
     private val sharedViewModel: SharedViewModel by viewModels()
     private val adapter: ListAdapter by lazy { ListAdapter() }
 
+    private var dataStore: DataStoreManager? = null
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -37,6 +42,8 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
         _binding = FragmentListBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.mSharedViewModel = sharedViewModel
+
+        dataStore = DataStoreManager(requireContext())
 
         // setup Recycler View
         setUpRecyclerView()
@@ -56,16 +63,22 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
     private fun setUpRecyclerView() {
         val recyclerView = binding.listRecyclerView
         recyclerView.adapter = adapter
-        if (binding.listRecyclerView.layoutManager is StaggeredGridLayoutManager) {
-            recyclerView.layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        } else {
-            recyclerView.layoutManager =
-                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        }
+        todoViewModel.recyclerViewOrientation.observe(viewLifecycleOwner, {
+            when (it) {
+                Orientation.LINEAR.name -> {
+                    recyclerView.layoutManager =
+                        LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+                }
+                Orientation.GRID.name -> {
+                    recyclerView.layoutManager =
+                        StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+                }
+            }
+        })
         // swipe to delete
         swipeToDelete(recyclerView)
     }
+
 
     private fun getLiveListData() {
         todoViewModel.getAllData.observe(viewLifecycleOwner, { data ->
@@ -114,7 +127,13 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
         when (item.itemId) {
             R.id.delete_all_menu -> confirmRemoval()
             R.id.menu_arrange -> {
-                setUpRecyclerView()
+                if (todoViewModel.recyclerViewOrientation.value == Orientation.GRID.name) {
+                    todoViewModel.saveOrientation(Orientation.LINEAR.name)
+                    todoViewModel.recyclerViewOrientation.value = Orientation.LINEAR.name
+                } else {
+                    todoViewModel.saveOrientation(Orientation.GRID.name)
+                    todoViewModel.recyclerViewOrientation.value = Orientation.GRID.name
+                }
                 getLiveListData()
             }
             R.id.sort_by_menu -> {
